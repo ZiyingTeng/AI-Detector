@@ -1,0 +1,8 @@
+# Front end
+streamlit>=1.36
+pandas
+altair
+# GLTR colouring (GPT-2)
+torch
+transformers
+# F merges each member's requirements/P7_X.txt below
