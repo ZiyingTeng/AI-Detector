@@ -32,8 +32,6 @@ def predict(text: str) -> dict:
 
 ## 上传规则
 
-- 只上传自己的文件，不改、不删别人的。
-- 不会用 git：在仓库网页进入对应文件夹，点 **Add file → Upload files**，拖入文件，点 Commit。
 - 单个文件不能超过 100 MB。
 - 视频、录音和幻灯直接发给 F，不放进仓库。
 
