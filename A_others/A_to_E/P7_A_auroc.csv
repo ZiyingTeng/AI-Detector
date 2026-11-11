@@ -1,0 +1,5 @@
+dataset,detector,auroc,f1,tpr_at_1fpr
+HC3,A,0.99,0.96,0.67
+MAGE,A,0.56,0.55,0.04
+RAID (subset),A,0.66,0.65,0.03
+New generators,A,0.76,0.84,0.03
