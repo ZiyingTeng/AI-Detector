@@ -1,0 +1,3 @@
+dataset,detector,auroc,f1,tpr_at_1fpr
+HC3,D,0.99,0.98,0.68
+NewGen,D,0.95,0.87,0.21
