@@ -40,12 +40,12 @@ def tpr_at_fpr(y, s, target=0.01):
     return float(tpr[ok].max()) if ok.any() else 0.0
 
 
-def replace_rows(path, new_rows):
+def replace_rows(path, new_rows, float_format=None):
     """Drop earlier New-generators rows from a member's CSV, then append the new ones."""
     old = pd.read_csv(path, encoding="utf-8-sig")
     old = old[old["dataset"].astype(str).str.strip().str.lower() != DATASET.lower()]
     out = pd.concat([old, pd.DataFrame(new_rows)[old.columns]], ignore_index=True)
-    out.to_csv(path, index=False, encoding="utf-8")
+    out.to_csv(path, index=False, encoding="utf-8", float_format=float_format)
 
 
 def run(key):
@@ -69,7 +69,8 @@ def run(key):
 
     folder = os.path.join(ROOT, f"{key}_others", f"{key}_to_E")
     replace_rows(os.path.join(folder, f"P7_{key}_auroc.csv"),
-                 [{"dataset": DATASET, "detector": key, "auroc": fmt(auroc), "f1": fmt(f1), "tpr_at_1fpr": fmt(tpr)}])
+                 [{"dataset": DATASET, "detector": key, "auroc": fmt(auroc), "f1": fmt(f1), "tpr_at_1fpr": fmt(tpr)}],
+                 float_format=f"%.{d}f" if d is not None else None)
     replace_rows(os.path.join(folder, f"P7_{key}_metrics.csv"),
                  [{"dataset": DATASET, "method": cfg["method"], "config": cfg["config"], "metric": m, "value": v}
                   for m, v in [("AUROC", auroc), ("F1", f1), ("TPR@1%FPR", tpr)]])
