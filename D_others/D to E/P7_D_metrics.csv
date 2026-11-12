@@ -1,0 +1,13 @@
+﻿dataset,method,config,metric,value
+HC3,LLM Judge,model=deepseek-flash; prompt=few_shot; threshold=0.50,AUROC,0.991825
+HC3,LLM Judge,model=deepseek-flash; prompt=few_shot; threshold=0.50,F1,0.978139
+HC3,LLM Judge,model=deepseek-flash; prompt=few_shot; threshold=0.50,TPR@1%FPR,0.676667
+MAGE,LLM Judge,model=deepseek-flash; prompt=few_shot; threshold=0.50,AUROC,0.760204
+MAGE,LLM Judge,model=deepseek-flash; prompt=few_shot; threshold=0.50,F1,0.649351
+MAGE,LLM Judge,model=deepseek-flash; prompt=few_shot; threshold=0.50,TPR@1%FPR,0.353741
+New generators,LLM Judge,model=deepseek-flash; prompt=few_shot; threshold=0.50,AUROC,0.950571
+New generators,LLM Judge,model=deepseek-flash; prompt=few_shot; threshold=0.50,F1,0.866738
+New generators,LLM Judge,model=deepseek-flash; prompt=few_shot; threshold=0.50,TPR@1%FPR,0.206081
+RAID (subset),LLM Judge,model=deepseek-flash; prompt=few_shot; threshold=0.50,AUROC,0.909967
+RAID (subset),LLM Judge,model=deepseek-flash; prompt=few_shot; threshold=0.50,F1,0.850084
+RAID (subset),LLM Judge,model=deepseek-flash; prompt=few_shot; threshold=0.50,TPR@1%FPR,0.722628
