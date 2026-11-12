@@ -5,8 +5,8 @@
 ## 运行
 
 ```bash
-pip install -r requirements.txt
-cp .streamlit/secrets.toml.example .streamlit/secrets.toml   # 填入 API key
+pip install -r requirements.txt   # 建议 Python 3.12
+cp .streamlit/secrets.toml.example .streamlit/secrets.toml   # 填入 DEEPSEEK_API_KEY
 streamlit run app.py
 ```
 
@@ -41,7 +41,8 @@ def predict(text: str) -> dict:
 app.py                 检测页（F）
 pages/1_Results.py     实验结果页（F，读取 results/）
 pages/2_Attack_Demo.py 攻击对比页（F，读取 results/attack_pairs.csv）
-detectors.py           加载 A–D 的 predict()，缺失时用 mock
+detectors.py           加载 A–D 的 predict()，统一各人的返回字段，缺失时用 mock
+results_data.py        查找结果文件：results/ → E_others/ → 各人的 X_others/X_to_E/
 gltr.py                GPT-2 逐词排名着色
 P7_A..D_predict.py     各检测器（A–D）
 models/                A、B 的模型文件

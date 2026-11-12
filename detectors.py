@@ -1,8 +1,9 @@
-"""Loads the four detectors (A–D).
+"""Loads the four detectors (A–D) and normalises their outputs.
 
-Each member uploads P7_X_predict.py with a predict(text) -> dict function.
-If a file is missing or fails to import, a mock detector is used instead,
-so the app always runs.
+Each member uploaded P7_X_predict.py with predict(text) -> dict.
+If a file fails to import, a mock detector is used so the app still runs.
+Field names differ a little between members; normalise() maps them to
+one shape for the UI.
 """
 import hashlib
 import importlib
@@ -12,14 +13,14 @@ import streamlit as st
 
 DETECTORS = {
     "A": ("Stylometric + XGBoost", "P7_A_predict"),
-    "B": ("Perplexity / GLTR", "P7_B_predict"),
-    "C": ("Fine-tuned classifier", "P7_C_predict"),
-    "D": ("LLM judge", "P7_D_predict"),
+    "B": ("GPT-2 perplexity + GLTR", "P7_B_predict"),
+    "C": ("Fine-tuned RoBERTa", "P7_C_predict"),
+    "D": ("LLM judge (DeepSeek)", "P7_D_predict"),
 }
 
 
 def _export_secrets():
-    """Copy top-level secrets (e.g. OPENAI_API_KEY) into environment variables."""
+    """Copy top-level secrets (e.g. DEEPSEEK_API_KEY) into environment variables."""
     try:
         for k, v in st.secrets.items():
             if isinstance(v, str):
@@ -34,7 +35,7 @@ def _mock(key):
         p = (h % 1000) / 1000
         extra = {}
         if key == "B":
-            extra = {"perplexity": round(5 + (1 - p) * 40, 1)}
+            extra = {"ppl": round(5 + (1 - p) * 40, 1)}
         if key == "D":
             extra = {"reason": "Mock reason: uniform sentence length and generic phrasing."}
         return {"prob_ai": p, "label": "AI" if p >= 0.5 else "Human", "extra": extra}
@@ -49,15 +50,41 @@ def load_detectors() -> dict:
     for key, (name, module) in DETECTORS.items():
         try:
             m = importlib.import_module(module)
-            out[key] = {"name": name, "predict": m.predict, "mock": False}
-        except Exception as e:  # missing file, missing model, missing package…
-            out[key] = {"name": name, "predict": _mock(key), "mock": True, "error": repr(e)}
+            out[key] = {"name": name, "predict": m.predict, "mock": False, "error": None}
+        except Exception as e:  # missing file, missing package…
+            out[key] = {"name": name, "predict": _mock(key), "mock": True, "error": f"{type(e).__name__}: {e}"}
     return out
 
 
-def run(detector: dict, text: str):
-    """Call a detector safely. Returns the result dict, or None if it failed."""
+def normalise(key: str, r):
+    """Map each member's output to: prob_ai, label, usable, notes, perplexity, reason, sentences."""
+    if not r or "prob_ai" not in r:
+        return None
+    extra = r.get("extra") or {}
+    out = {
+        "prob_ai": min(max(float(r["prob_ai"]), 0.0), 1.0),
+        "label": r.get("label", ""),
+        "usable": True,     # counts towards the overall verdict
+        "notes": [],
+        "perplexity": extra.get("perplexity", extra.get("ppl")),   # B uses "ppl"
+        "reason": extra.get("reason"),                               # D
+        "sentences": extra.get("sentences"),                         # C: [{"text", "prob_ai"}]
+    }
+    if extra.get("note"):                       # A: text too short -> neutral 0.5
+        out["notes"].append(extra["note"])
+        out["usable"] = False
+    if extra.get("truncated"):                  # B, C: only the first 256 tokens are scored
+        out["notes"].append("only the first 256 tokens were scored")
+    if extra.get("tfidf_lr_prob_ai") is not None:
+        out["notes"].append(f"TF-IDF + LR baseline: {extra['tfidf_lr_prob_ai']:.2f}")
+    if extra.get("score_type"):                 # D: LLM score, not calibrated
+        out["notes"].append("LLM score, not a calibrated probability")
+    return out
+
+
+def run(key: str, detector: dict, text: str):
+    """Call a detector safely. Returns the normalised result, or None if it failed."""
     try:
-        return detector["predict"](text)
+        return normalise(key, detector["predict"](text))
     except Exception:
         return None

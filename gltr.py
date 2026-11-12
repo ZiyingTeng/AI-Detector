@@ -10,7 +10,7 @@ import random
 import streamlit as st
 
 REF_MODEL = "gpt2"  # keep the same as B's reference model
-MAX_LEN = 512
+MAX_LEN = 256  # same as B
 
 COLORS = {
     "top10": "rgba(76, 175, 80, 0.35)",
