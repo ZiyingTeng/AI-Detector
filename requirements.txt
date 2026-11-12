@@ -14,7 +14,7 @@ xgboost==3.2.0
 joblib
 
 # B, C and GLTR colouring: GPT-2 / RoBERTa
-torch==2.7.1
+torch>=2.7.1   # inference only; newer versions are fine (Python 3.13+ needs torch>=2.9)
 transformers==5.22.1
 tokenizers==0.23.3
 safetensors==0.8.0
