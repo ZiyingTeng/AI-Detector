@@ -63,3 +63,6 @@ RAID-adv,roberta-base-ft,train=ALL,AUROC,0.9304
 RAID-adv,roberta-base-ft,train=ALL,F1,0.8709
 RAID-adv,roberta-base-ft,train=ALL,TPR@1%FPR,0.104
 RAID-adv,roberta-base-ft,train=ALL,Accuracy,0.871
+New generators,roberta-base-ft,train=ALL,AUROC,0.6080490523968785
+New generators,roberta-base-ft,train=ALL,F1,0.5083474582627087
+New generators,roberta-base-ft,train=ALL,TPR@1%FPR,0.016722408026755852

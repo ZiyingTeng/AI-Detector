@@ -11,3 +11,6 @@ RAID,gpt2-gltr-lr,train=HC3,AUROC,0.7456479999999999
 RAID,gpt2-gltr-lr,train=HC3,F1,0.6170798898071626
 RAID,gpt2-gltr-lr,train=HC3,TPR@1%FPR,0.488
 RAID,gpt2-gltr-lr,train=HC3,Accuracy,0.722
+New generators,gpt2-gltr-lr,train=HC3,AUROC,0.47405797101449276
+New generators,gpt2-gltr-lr,train=HC3,F1,0.06172839506172839
+New generators,gpt2-gltr-lr,train=HC3,TPR@1%FPR,0.0033444816053511705

@@ -2,3 +2,4 @@ dataset,detector,auroc,f1,tpr_at_1fpr
 HC3,C,1.00,0.99,1.00
 MAGE,C,0.90,0.76,0.45
 RAID,C,1.00,0.97,0.96
+New generators,C,0.61,0.51,0.02
