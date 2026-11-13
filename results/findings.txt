@@ -1,0 +1,7 @@
+1. Detector B was the most affected by paraphrasing. Its AUROC dropped sharply from 0.47 to 0.28 (−0.19), indicating that its statistical detection approach performed particularly poorly on rewritten AI text.
+
+2. Detector C showed limited robustness to paraphrasing. Its AUROC decreased from 0.61 to 0.56 (−0.05), bringing its discrimination ability closer to random guessing. This suggests that fine-tuning alone did not ensure strong generalization to rewritten AI text.
+
+3. Detector A remained relatively stable after paraphrasing. Its AUROC decreased only slightly from 0.76 to 0.73 (−0.03). Compared with B and C, the stylometric approach maintained more consistent discrimination performance.
+
+4. Detector D achieved the strongest overall performance. Its AUROC increased slightly from 0.95 to 0.97 (+0.02), maintaining a substantial advantage over the other three detectors. The overall performance ranking remained D > A > C > B both before and after paraphrasing.

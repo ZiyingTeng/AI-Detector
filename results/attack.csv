@@ -1,0 +1,5 @@
+﻿detector,auroc_before,auroc_after,f1_binary_at_0_5_after,tpr_at_1fpr_after,total,human_Original,ai_Rewritten
+A,0.76,0.73,0.79,0.02,449,150,299
+B,0.47,0.28,0.02,0,449,150,299
+C,0.61,0.56,0.5,0.12,449,150,299
+D,0.95,0.97,0.92,0.51,449,150,299
