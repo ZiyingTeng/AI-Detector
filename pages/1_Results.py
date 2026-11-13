@@ -26,7 +26,7 @@ else:
     table = table.reindex(order).astype(float)
     st.dataframe(
         table.style.format("{:.2f}", na_rep="–").highlight_max(axis=1, props="font-weight:bold"),
-        use_container_width=True,
+        width="stretch",
     )
     st.caption("Bold = best detector on each test set. – = not reported yet.")
 
@@ -43,7 +43,7 @@ else:
         )
         .properties(height=320)
     )
-    st.altair_chart(chart, use_container_width=True)
+    st.altair_chart(chart, width="stretch")
 
 # ---- attack before / after ----
 st.subheader("Before and after paraphrase attacks")
@@ -57,15 +57,22 @@ else:
         alt.Chart(long)
         .mark_bar(clip=True)
         .encode(
-            x=alt.X("detector:N", title="Detector"),
+            x=alt.X(
+                "detector:N", title="Detector", sort=["A", "B", "C", "D"],
+                axis=alt.Axis(labelAngle=0),
+            ),
             xOffset=alt.XOffset("condition:N", sort=["Before", "After attack"]),
-            y=alt.Y("AUROC:Q", scale=alt.Scale(domain=[0.25, 1])),
+            y=alt.Y(
+                "AUROC:Q",
+                scale=alt.Scale(domain=[0.25, 1], zero=False, nice=False),
+                axis=alt.Axis(values=[0.25, 0.50, 0.75, 1.00], format=".2f"),
+            ),
             color=alt.Color("condition:N", title=None, sort=["Before", "After attack"]),
             tooltip=["detector", "condition", alt.Tooltip("AUROC:Q", format=".2f")],
         )
         .properties(height=320)
     )
-    st.altair_chart(chart, use_container_width=True)
+    st.altair_chart(chart, width="stretch")
 
 # ---- findings ----
 st.subheader("Key findings")
