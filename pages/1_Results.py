@@ -59,7 +59,7 @@ else:
         .encode(
             x=alt.X("detector:N", title="Detector"),
             xOffset=alt.XOffset("condition:N", sort=["Before", "After attack"]),
-            y=alt.Y("AUROC:Q", scale=alt.Scale(domain=[0.4, 1])),
+            y=alt.Y("AUROC:Q", scale=alt.Scale(domain=[0.25, 1])),
             color=alt.Color("condition:N", title=None, sort=["Before", "After attack"]),
             tooltip=["detector", "condition", alt.Tooltip("AUROC:Q", format=".2f")],
         )
