@@ -21,7 +21,8 @@ from sklearn.metrics import f1_score, roc_auc_score, roc_curve
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
-DATA = os.path.join(ROOT, "P7_new_generators.csv")
+import glob
+DATA = next(iter(sorted(glob.glob(os.path.join(ROOT, "**", "P7_new_generators.csv"), recursive=True))), "")
 DATASET = "New generators"   # same name A used
 THRESHOLD = 0.5
 

@@ -5,6 +5,7 @@ If a file fails to import, a mock detector is used so the app still runs.
 Field names differ a little between members; normalise() maps them to
 one shape for the UI.
 """
+import glob
 import hashlib
 import importlib
 import os
@@ -29,6 +30,15 @@ def _export_secrets():
         pass
 
 
+def _point_d_to_fewshot():
+    """D's predict() reads data/fewshot_examples.json; D uploaded it under D_others/, so pass that path."""
+    if os.environ.get("P7_D_FEWSHOT"):
+        return
+    hits = sorted(glob.glob("D_others/**/fewshot_examples.json", recursive=True)) + glob.glob("data/fewshot_examples.json")
+    if hits:
+        os.environ["P7_D_FEWSHOT"] = os.path.abspath(hits[0])
+
+
 def _mock(key):
     def predict(text: str) -> dict:
         h = int(hashlib.md5((key + text).encode()).hexdigest(), 16)
@@ -46,6 +56,7 @@ def _mock(key):
 @st.cache_resource(show_spinner="Loading detectors…")
 def load_detectors() -> dict:
     _export_secrets()
+    _point_d_to_fewshot()
     out = {}
     for key, (name, module) in DETECTORS.items():
         try:
