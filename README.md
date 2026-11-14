@@ -38,7 +38,8 @@ def predict(text: str) -> dict:
 ## 结构
 
 ```
-app.py                 检测页（F）
+app.py                 入口：设置侧栏页面名（F）
+detect.py              检测页（F）
 pages/1_Results.py     实验结果页（F，读取 results/）
 pages/2_Attack_Demo.py 攻击对比页（F，读取 results/attack_pairs.csv）
 detectors.py           加载 A–D 的 predict()，统一各人的返回字段，缺失时用 mock
