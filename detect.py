@@ -10,7 +10,7 @@ import pandas as pd
 import streamlit as st
 
 import gltr
-from detectors import load_detectors, run
+from detectors import LAST_ERROR, load_detectors, run
 
 st.set_page_config(page_title="AI Text Detector", layout="wide")
 
@@ -83,9 +83,9 @@ if go and text.strip():
         if abs(mean_p - threshold) < 0.1:
             verdict = "Uncertain"
         elif mean_p >= threshold:
-            verdict = "Likely AI-generated"
+            verdict = "Likely AI"
         else:
-            verdict = "Likely human-written"
+            verdict = "Likely human"
         c1, c2, c3 = st.columns(3)
         c1.metric("Verdict", verdict)
         c2.metric("Mean AI score", f"{mean_p:.2f}")
@@ -101,7 +101,8 @@ if go and text.strip():
         cols = st.columns([2, 5, 1])
         cols[0].markdown(f"**{key} · {d['name']}**" + (" *(mock)*" if d["mock"] else ""))
         if r is None:
-            cols[1].warning("Unavailable (the call failed — check the model download or API key)")
+            cols[1].warning("Unavailable")
+            st.caption(f"Reason: {LAST_ERROR.get(key, 'unknown')}")
             continue
         cols[1].progress(r["prob_ai"])
         cols[2].markdown(f"`{r['prob_ai']:.2f}`")

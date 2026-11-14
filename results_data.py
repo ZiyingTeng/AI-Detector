@@ -6,6 +6,7 @@ normalised so the pages can treat them the same.
 """
 import glob
 import os
+import re
 
 import pandas as pd
 
@@ -86,4 +87,4 @@ def load_findings():
     if not path:
         return []
     with open(path, encoding="utf-8-sig") as f:
-        return [l.strip().lstrip("-• ").strip() for l in f if l.strip()]
+        return [re.sub(r"^\s*(?:[-•*]|\d+[.)])\s*", "", l).strip() for l in f if l.strip()]

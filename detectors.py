@@ -93,9 +93,18 @@ def normalise(key: str, r):
     return out
 
 
+LAST_ERROR = {}
+
+
 def run(key: str, detector: dict, text: str):
-    """Call a detector safely. Returns the normalised result, or None if it failed."""
+    """Call a detector safely. Returns the normalised result, or None if it failed
+    (the reason is kept in LAST_ERROR[key] so the page can show it)."""
     try:
-        return normalise(key, detector["predict"](text))
-    except Exception:
+        out = normalise(key, detector["predict"](text))
+        LAST_ERROR.pop(key, None)
+        if out is None:
+            LAST_ERROR[key] = "the detector returned no score (see the terminal for details)"
+        return out
+    except Exception as e:
+        LAST_ERROR[key] = f"{type(e).__name__}: {e}"
         return None
